@@ -10,6 +10,7 @@ namespace EmployeeReviewsFront
     {
         public string Name { get; set; }
         public List<Employee> EmployeeList { get; set; }
+        public string SaveLocation { get; set; }
 
         public decimal TotalSalary()
         {
@@ -20,13 +21,13 @@ namespace EmployeeReviewsFront
         {
             foreach (var e in EmployeeList)
             {
-                e.isSatisfactory = EvaluationCheck(e);
+                e.IsSatisfactory = e.Evaluate();
             }
         }
 
         public void GiveRaise(decimal r)
         {
-            decimal empraise = r/EmployeeList.Count;
+            var empraise = r/EmployeeList.Count;
             foreach (var e in EmployeeList)
             {
                 e.Salary += r;
@@ -38,9 +39,5 @@ namespace EmployeeReviewsFront
             EmployeeList.Add(e);
         }
 
-        public bool EvaluationCheck(Employee e)
-        {
-            return true;
-        }
     }
 }
