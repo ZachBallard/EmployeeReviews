@@ -21,21 +21,21 @@ namespace EmployeeReviewsFront
 
 
 
-        public string NegWordKey1 { get; private set; } = @"(takes longer)|(not useful)|(negative)|(sad)|(bad)|(slower)|(unsatisfactory)|(unhappy)
+        private string NegWordKey1 { get; set; } = @"(takes longer)|(not useful)|(negative)|(sad)|(bad)|(slower)|(unsatisfactory)|(unhappy)
                                                           |(upset)|(messy)|(clumsy)|(interrupt)|(talk over)|(dwell)|(fewer)|(accomidate)|(off topic)|(is rarely)|(not done well)
                                                           |(needs to work)|(needs work)|(difficult)|(could do a better job)|(misusing)|(is not)|(could do more)|(unacceptable)
                                                           |(misses)|(poor)|(inability)|(however)|(However)|(takes longer)";
-        public string NegWordKey2 { get; private set; } = @"(negative)|(angry)|(apath)|(callous)|(moan)|(whine)|(confus)|(depressed)|(ill)|(dirty)|(fault)|(greed)|(fail)
+        private string NegWordKey2 { get; set; } = @"(negative)|(angry)|(apath)|(callous)|(moan)|(whine)|(confus)|(depressed)|(ill)|(dirty)|(fault)|(greed)|(fail)
                                                           |(questionable)|(pain)|(shoddy)|(stupid)|(substandard)|(smelly)|(hate)|(loud)|(complain)|(potential issues)|(late)";
-        public string NegWordKey3 { get; private set; } = @"(abismal)|(terrifying)|(disgusting)|(gross)|(jealous)|(revolting)|(belligerent)|(foul)|(vindictive)|(lack)
+        private string NegWordKey3 { get; set; } = @"(abismal)|(terrifying)|(disgusting)|(gross)|(jealous)|(revolting)|(belligerent)|(foul)|(vindictive)|(lack)
                                                           |(worthless)|(detrimental)|(crazy)|(gross)|(severe)|(scary)|(obnoxious)|(inadequate)|(rude)|(absent)|(alarming)";
 
-        public string PosWordKey1 { get; private set; } = @"(good)|(acceptable)|(fine)|(happy)|(nice)|(ok)|(OK)|(friendly)|(quick)|(agreeable)|(charming)|(compet)
+        private string PosWordKey1 { get; set; } = @"(good)|(acceptable)|(fine)|(happy)|(nice)|(ok)|(OK)|(friendly)|(quick)|(agreeable)|(charming)|(compet)
                                                           |(kind)|(modest)|(polite)|(smiling)|(teachable)|(enjoy)|(rarely needs)|(consistent)|(has done well)";
-        public string PosWordKey2 { get; private set; } = @"(positive)|(great)|(friendly)|(pleas)|(honest)|(respectful)|(alert)|(balanced)|(considerate)|(cheerful)
+        private string PosWordKey2 { get; set; } = @"(positive)|(great)|(friendly)|(pleas)|(honest)|(respectful)|(alert)|(balanced)|(considerate)|(cheerful)
                                                           |(careful)|(willing)|(love)|(optimist)|(youthful)|(responsive)|(hope to)|(valu)|(always willing)
                                                           |(success)|(punctual)";
-        public string PosWordKey3 { get; private set; } = @"(efficient)|(effective)|(wonderful)|(amazing)|(awesome)|(fantastic)|(delight)|(excellent)|(asset)|(flawless)
+        private string PosWordKey3 { get; set; } = @"(efficient)|(effective)|(wonderful)|(amazing)|(awesome)|(fantastic)|(delight)|(excellent)|(asset)|(flawless)
                                                           |(flourish)|(innovat)|(ingenuity)|(ideal)|(trustworthy)|(dependable)|(motivated)|(obedient)|(perfect)
                                                           |(incredible)|(devoted)|(incredib)|(impressed)|(devoted)(responsible)|(dependable)|(valuable)|(knowledgeable)";
 
@@ -45,6 +45,7 @@ namespace EmployeeReviewsFront
             Salary = decimal.Round(s, 2, MidpointRounding.AwayFromZero);
             Email = e;
             PhoneNum = p;
+
             IsSatisfactory = true;
         }
 

@@ -14,8 +14,7 @@ namespace EmployeeReviewsFront
         {
             //load company profile
 
-            string saveData = System.IO.File.ReadAllText(@"C:\Users\zbgin\OneDrive\Documents\Visual Studio 2015\Projects\EmployeeReviews
-                                                             \EmployeeReviewsFront\SaveData.txt");
+            string saveData = System.IO.File.ReadAllText(@"App_Data\SaveData.txt");
 
             //Example text <%Zach's Palace%#,Zachary Ballard,,55000,,zbginji@gmail.com,,(479)650-5231,,true,,true,,review,#>
 
@@ -80,7 +79,7 @@ namespace EmployeeReviewsFront
                         ;
                     }
 
-                    c.DepartmentList[i].EmployeeList.Add(new Employee(empName, empSalary,empEmail,empPhoneNumber));
+                    c.DepartmentList[i].EmployeeList.Add(new Employee(empName, empSalary, empEmail, empPhoneNumber));
                     c.DepartmentList[i].EmployeeList[j].IsSatisfactory = empIsSatisfactory;
                     c.DepartmentList[i].EmployeeList[j].HasReview = empHasReview;
                     c.DepartmentList[i].EmployeeList[j].Review = empReview;
@@ -90,12 +89,31 @@ namespace EmployeeReviewsFront
             while (true)//Main program loop
             {
                 int selection = 0;
+
+                //Display department list
+                drawDepartments(c);
                 
-                //Display either department list
+                //select department, create a department then add to company list, delete department, exit and save
+                selection = DepartmentLevelChoice(c);
 
-                //select department, create a department then add to company list, exit and save
-                selection = DepartmentLevelChoice();
+                if (selection == 1)
+                {
+                    
+                }
 
+                if (selection == 2 && c.DepartmentList.Count > 0)
+                {
+                    
+                }
+
+                if (selection == 3)
+                {
+                    
+                }
+                if (selection == 4)
+                {
+                    
+                }
                 //display employee list of selected department
 
                 //perform actions on department level (add/remove employee, simulate review for employee, evaluate department, offer department raise)
@@ -105,9 +123,37 @@ namespace EmployeeReviewsFront
             //save company profile on exit
         }
 
-        private static int DepartmentLevelChoice()
+        private static int DepartmentLevelChoice(Company c)
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+                Console.WriteLine("==== Department Level Actions ===============================================");
+                Console.WriteLine("\n(c)reate department (r)emove department, (s)elect department, (e)xit and save");
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "c":
+                        return 1;
+                    case "r":
+                        return 2;
+                    case "s":
+                        return 3;
+                    case "e":
+                        return 4;
+                    default:
+                        Console.WriteLine("> Invalid Selection <");
+                        break;
+                }
+            }
+        }
+
+        private static void drawDepartments(Company c)
+        {
+            for (int i = 0; i < c.DepartmentList.Count; i++)
+            {
+                Console.WriteLine(c.DepartmentList[i].Name);
+            }
         }
 
         private static int EmployeeLevelChoice()
