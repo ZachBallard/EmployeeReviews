@@ -40,7 +40,7 @@ namespace EmployeeReviewsFront
         public Employee(string n, decimal s, string e, string p)
         {
             Name = n;
-            Salary = s;
+            Salary = decimal.Round(s, 2, MidpointRounding.AwayFromZero);
             Email = e;
             PhoneNum = p;
         }

@@ -9,9 +9,12 @@ namespace EmployeeReviewsFront
     public class Department
     {
         public string Name { get; set; }
-        public List<Employee> EmployeeList { get; set; }
-        public string SaveLocation { get; set; }
+        public List<Employee> EmployeeList { get; set; } = new List<Employee>();
 
+        public Department(string name)
+        {
+            Name = name;
+        }
         public decimal TotalSalary()
         {
             return EmployeeList.Sum(e => e.Salary);
@@ -27,10 +30,10 @@ namespace EmployeeReviewsFront
 
         public void GiveRaise(decimal r)
         {
-            var empraise = r/EmployeeList.Count;
+            var empRaise = r/EmployeeList.Count;
             foreach (var e in EmployeeList)
             {
-                e.Salary += r;
+                e.Salary += decimal.Round(empRaise,2,MidpointRounding.AwayFromZero);
             }
         }
 

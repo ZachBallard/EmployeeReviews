@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeReviewsFront
 {
-    class Company
+    public class Company
     {
         public List <Department> AllDepartments { get; set; } 
     }
