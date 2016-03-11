@@ -76,7 +76,8 @@ namespace EmployeeReviewsFront
                             case 7:
                                 empReview = employeeInfo[k].ToString();
                                 break;
-                        };
+                        }
+                        ;
                     }
 
                     c.DepartmentList[i].EmployeeList.Add(new Employee(empName, empSalary,empEmail,empPhoneNumber));
@@ -90,22 +91,26 @@ namespace EmployeeReviewsFront
             {
                 int selection = 0;
                 
+                //Display either department list
+
                 //select department, create a department then add to company list, exit and save
-                selection = departmentLevelChoice();
+                selection = DepartmentLevelChoice();
+
+                //display employee list of selected department
 
                 //perform actions on department level (add/remove employee, simulate review for employee, evaluate department, offer department raise)
-                selection = employeeLevelChoice();
+                selection = EmployeeLevelChoice();
             }//Main program loop
 
             //save company profile on exit
         }
 
-        private static int departmentLevelChoice()
+        private static int DepartmentLevelChoice()
         {
             throw new NotImplementedException();
         }
 
-        private static int employeeLevelChoice()
+        private static int EmployeeLevelChoice()
         {
             throw new NotImplementedException();
         }
