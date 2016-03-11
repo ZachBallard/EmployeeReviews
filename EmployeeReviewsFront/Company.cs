@@ -8,6 +8,16 @@ namespace EmployeeReviewsFront
 {
     public class Company
     {
-        public List <Department> AllDepartments { get; set; } 
+        public List <Department> DepartmentList { get; set; } = new List<Department>();
+
+        public void SaveCompanyState()
+        {
+            
+        }
+
+        public void LoadCompanyState()
+        {
+            
+        }
     }
 }

@@ -30,11 +30,19 @@ namespace EmployeeReviewsFront
 
         public void GiveRaise(decimal r)
         {
-            var empRaise = r/EmployeeList.Count;
-            foreach (var e in EmployeeList)
+            var empsEligible = EmployeeList.Count(e => e.IsSatisfactory);
+
+            var empRaise = r/empsEligible;
+
+            foreach (var e in EmployeeList.Where(e => e.IsSatisfactory))
             {
-                e.Salary += decimal.Round(empRaise,2,MidpointRounding.AwayFromZero);
+                e.Salary += decimal.Round(empRaise, 2, MidpointRounding.AwayFromZero);
             }
+        }
+
+        public void RemoveEmployee(Employee e)
+        {
+            EmployeeList.Remove(e);
         }
 
         public void AddEmployee(Employee e)
