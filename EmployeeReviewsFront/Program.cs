@@ -14,76 +14,43 @@ namespace EmployeeReviewsFront
         {
             //load company profile
 
-            string saveData = System.IO.File.ReadAllText(@"App_Data\SaveData.txt");
+            var saveData = System.IO.File.ReadAllLines(@"App_Data\SaveData.txt")
+                                    .Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
 
-            //Example text <%Zach's Palace%#,Zachary Ballard,,55000,,zbginji@gmail.com,,(479)650-5231,,true,,true,,review,#>
+            var loadedDepartments = new List<Department>();
 
-            var c = new Company();
-
-            var allDepartmentData = new Regex(@"(?:<)(.+?)(?:>)");
-            var departmentData = new Regex(@"(?:%)(.+?)(?:%)");
-            var allEmployeeData = new Regex(@"(?:#)(.+?)(?:#)");
-            var employeeData = new Regex(@"(?:,)(.+?)(?:,)");
-
-            MatchCollection allDepartment = allDepartmentData.Matches(saveData);
-            MatchCollection departmentName = departmentData.Matches(saveData);
-
-            //as we work through the number of departments put a new one with name in departmentlist
-            for (int i = 0; i < allDepartment.Count; i++)
+            if (saveData.Any() && saveData.First().StartsWith("#"))
             {
-                string name = departmentName[i].ToString();
-                c.DepartmentList.Add(new Department(name));
+                //Load the file
+                //structure:
+                //#Department Name
+                //<Employee info>
+                //#Department Name 2
+                //....
 
-                //create list of all employees in current department
-                MatchCollection allEmployee = allEmployeeData.Matches(allDepartment[i].ToString());
+                Department currDepartment = null;
 
-                //as we work through the employees in each department create a list of information for each and use for new employee
-                for (int j = 0; j < allEmployee.Count; j++)
+                foreach (var row in saveData)
                 {
-                    MatchCollection employeeInfo = employeeData.Matches(allEmployee[j].ToString());
-
-                    string empName = "";
-                    decimal empSalary = 0m;
-                    string empEmail = "";
-                    string empPhoneNumber = "";
-                    bool empIsSatisfactory = true;
-                    bool empHasReview = true;
-                    string empReview = "";
-
-                    for (int k = 0; k < employeeInfo.Count; k++)
+                    if (row.StartsWith("#"))
                     {
-                        switch (k)
-                        {
-                            case 1:
-                                empName = employeeInfo[k].ToString();
-                                break;
-                            case 2:
-                                empSalary = decimal.Parse(employeeInfo[k].ToString());
-                                break;
-                            case 3:
-                                empEmail = employeeInfo[k].ToString();
-                                break;
-                            case 4:
-                                empPhoneNumber = employeeInfo[k].ToString();
-                                break;
-                            case 5:
-                                empIsSatisfactory = bool.Parse(employeeInfo[k].ToString());
-                                break;
-                            case 6:
-                                empHasReview = bool.Parse(employeeInfo[k].ToString());
-                                break;
-                            case 7:
-                                empReview = employeeInfo[k].ToString();
-                                break;
-                        }
-                        ;
+                        //department row!
+                        currDepartment = new Department(row.Replace("#", ""));
+                        loadedDepartments.Add(currDepartment);
                     }
-
-                    c.DepartmentList[i].EmployeeList.Add(new Employee(empName, empSalary, empEmail, empPhoneNumber));
-                    c.DepartmentList[i].EmployeeList[j].IsSatisfactory = empIsSatisfactory;
-                    c.DepartmentList[i].EmployeeList[j].HasReview = empHasReview;
-                    c.DepartmentList[i].EmployeeList[j].Review = empReview;
+                    else
+                    {
+                        //employee info row!
+                        string[] columns = row.Split(',');
+                        Employee currEmployee = new Employee(columns[0], Convert.ToDecimal(columns[1]), columns[2],
+                            columns[3]);
+                        currDepartment.AddEmployee(currEmployee);
+                    }
                 }
+            }
+            else
+            {
+                //DON'T LOAD
             }
 
             while (true)//Main program loop
@@ -91,28 +58,31 @@ namespace EmployeeReviewsFront
                 int selection = 0;
 
                 //Display department list
-                drawDepartments(c);
-                
+                drawDepartments(loadedDepartments);
+
                 //select department, create a department then add to company list, delete department, exit and save
-                selection = DepartmentLevelChoice(c);
+                selection = DepartmentLevelChoice();
 
                 if (selection == 1)
                 {
-                    
+
                 }
 
-                if (selection == 2 && c.DepartmentList.Count > 0)
+                if (selection == 2 && loadedDepartments.Count > 0)
                 {
-                    
-                }
 
+                }
+                else
+                {
+                    Console.WriteLine("There are no departments to remove!");
+                }
                 if (selection == 3)
                 {
-                    
+
                 }
                 if (selection == 4)
                 {
-                    
+
                 }
                 //display employee list of selected department
 
@@ -123,7 +93,7 @@ namespace EmployeeReviewsFront
             //save company profile on exit
         }
 
-        private static int DepartmentLevelChoice(Company c)
+        private static int DepartmentLevelChoice()
         {
             while (true)
             {
@@ -148,11 +118,11 @@ namespace EmployeeReviewsFront
             }
         }
 
-        private static void drawDepartments(Company c)
+        private static void drawDepartments(List<Department> loadedDepartments)
         {
-            for (int i = 0; i < c.DepartmentList.Count; i++)
+            for (int i = 0; i < loadedDepartments.Count; i++)
             {
-                Console.WriteLine(c.DepartmentList[i].Name);
+                Console.WriteLine($"i){loadedDepartments[i].Name}");
             }
         }
 
