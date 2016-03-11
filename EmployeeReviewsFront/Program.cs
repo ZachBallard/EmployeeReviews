@@ -14,7 +14,7 @@ namespace EmployeeReviewsFront
         {
             //load company profile
 
-            string SaveData = System.IO.File.ReadAllText(@"C:\Users\zbgin\OneDrive\Documents\Visual Studio 2015\Projects\EmployeeReviews
+            string saveData = System.IO.File.ReadAllText(@"C:\Users\zbgin\OneDrive\Documents\Visual Studio 2015\Projects\EmployeeReviews
                                                              \EmployeeReviewsFront\SaveData.txt");
 
             //Example text <%Zach's Palace%#,Zachary Ballard,,55000,,zbginji@gmail.com,,(479)650-5231,,true,,true,,review,#>
@@ -26,17 +26,19 @@ namespace EmployeeReviewsFront
             var allEmployeeData = new Regex(@"(?:#)(.+?)(?:#)");
             var employeeData = new Regex(@"(?:,)(.+?)(?:,)");
 
-            MatchCollection allDepartment = allDepartmentData.Matches(SaveData);
-            MatchCollection departmentName = departmentData.Matches(SaveData);
+            MatchCollection allDepartment = allDepartmentData.Matches(saveData);
+            MatchCollection departmentName = departmentData.Matches(saveData);
 
-
+            //as we work through the number of departments put a new one with name in departmentlist
             for (int i = 0; i < allDepartment.Count; i++)
             {
                 string name = departmentName[i].ToString();
                 c.DepartmentList.Add(new Department(name));
 
+                //create list of all employees in current department
                 MatchCollection allEmployee = allEmployeeData.Matches(allDepartment[i].ToString());
 
+                //as we work through the employees in each department create a list of information for each and use for new employee
                 for (int j = 0; j < allEmployee.Count; j++)
                 {
                     MatchCollection employeeInfo = employeeData.Matches(allEmployee[j].ToString());
@@ -84,11 +86,28 @@ namespace EmployeeReviewsFront
                 }
             }
 
-            //select or create a department then add to company list
+            while (true)//Main program loop
+            {
+                int selection = 0;
+                
+                //select department, create a department then add to company list, exit and save
+                selection = departmentLevelChoice();
 
-            //perform actions on department level (add/remove employee, simulate review for employee, evaluate department, offer department raise)
+                //perform actions on department level (add/remove employee, simulate review for employee, evaluate department, offer department raise)
+                selection = employeeLevelChoice();
+            }//Main program loop
 
             //save company profile on exit
+        }
+
+        private static int departmentLevelChoice()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static int employeeLevelChoice()
+        {
+            throw new NotImplementedException();
         }
     }
 }
