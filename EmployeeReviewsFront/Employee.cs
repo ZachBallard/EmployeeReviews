@@ -47,6 +47,7 @@ namespace EmployeeReviewsFront
             PhoneNum = p;
 
             IsSatisfactory = true;
+            HasReview = false;
         }
 
         public bool Evaluate()

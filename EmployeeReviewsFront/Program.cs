@@ -55,12 +55,13 @@ namespace EmployeeReviewsFront
 
             bool exit = false;
             int departmentSelected = 0;
+            bool isDepartmentLevel = true;
 
             while (!exit)//Main program loop
             {
                 int selection = 0;
 
-                if (departmentSelected == 0)
+                if (isDepartmentLevel)
                 {
                     //Display department list
                     DrawLDepartment(loadedDepartments);
@@ -84,14 +85,13 @@ namespace EmployeeReviewsFront
 
                                 selection = RemoveWhichDepartment();
 
-                                // will not allow you to delete dept if only 1???
-
                                 if (selection == 0)
                                 {
                                     break;
                                 }
 
-                                if (loadedDepartments.Count >= selection-- && selection >= 0)
+                                //cannot remove if only one depatment???
+                                if (loadedDepartments.Count >= selection-- && selection > 0)
                                 {
                                     loadedDepartments.RemoveAt(selection);
                                     break;
@@ -118,11 +118,15 @@ namespace EmployeeReviewsFront
 
                                 departmentSelected = SelectWhichDepartment();
 
-                                if (loadedDepartments.Count >= departmentSelected)
+                                if (loadedDepartments.Count >= departmentSelected && departmentSelected > 0)
+                                {
+                                    isDepartmentLevel = false;
+                                    break;
+                                }
+                                if (departmentSelected == 0)
                                 {
                                     break;
                                 }
-
                                 Console.WriteLine("\nInvalid department selection. >Press Enter<");
                                 Console.ReadLine();
                             }
@@ -134,48 +138,100 @@ namespace EmployeeReviewsFront
                     }
                 }
 
-
-                if (!exit && departmentSelected > 0)
+                if (!exit && !isDepartmentLevel)
                 {
+                    departmentSelected -= 1;
+
                     while (true)
                     {
                         //display employee list of selected department
-                        if (loadedDepartments[departmentSelected].EmployeeList.Any())
-                        {
-                            DrawEmployees(loadedDepartments[departmentSelected].EmployeeList);
-                        }
+
+                        DrawEmployees(loadedDepartments[departmentSelected].EmployeeList);
+
                         //perform actions on employee level (add/remove employee, simulate review for employee, 
                         //evaluate department, offer department raise)
                         selection = EmployeeLevelChoice();
 
                         if (selection == 1)
                         {
-                            
+                            string name = "";
+                            decimal salary = 0m;
+                            string email = "";
+                            string phonenNumber = "";
+
+                            name = GetEmployeeName();
+                            salary = GetEmployeeSalary();
+                            email = GetEmployeeEmail();
+                            phonenNumber = GetEmployeePhoneNumber();
+
+                            loadedDepartments[departmentSelected].EmployeeList.Add(new Employee(name, salary, email, phonenNumber));
                         }
 
                         if (selection == 2)
                         {
-                            
+                            if (loadedDepartments[departmentSelected].EmployeeList.Count > 0)
+                            {
+                                while (true)
+                                {
+                                    DrawEmployees(loadedDepartments[departmentSelected].EmployeeList);
+
+                                    selection = RemoveEmployee();
+
+                                    if (selection == 0)
+                                    {
+                                        break;
+                                    }
+
+                                    //cannot remove if only one Employee???
+                                    if (loadedDepartments[departmentSelected].EmployeeList.Count >= selection-- && selection > 0)
+                                    {
+                                        loadedDepartments[departmentSelected].EmployeeList.RemoveAt(selection);
+                                        break;
+                                    }
+
+                                    Console.WriteLine("\nCannot remove nonexisting employee. >Press Enter<");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nThere are no employees to remove! >Press Enter<");
+                                Console.ReadLine();
+                            }
                         }
 
                         if (selection == 3)
                         {
-                            
+                            //simulate review for employee
                         }
 
                         if (selection == 4)
                         {
-                            
+                            //evaluate employees
                         }
 
                         if (selection == 5)
                         {
-                            
+                            if (loadedDepartments[departmentSelected].EmployeeList.Count > 0)
+                            {
+                                while (true)
+                                {
+                                    DrawEmployees(loadedDepartments[departmentSelected].EmployeeList);
+
+                                    loadedDepartments[departmentSelected].GiveRaise(GetRaiseAmount());
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("There are no employees to give a raise to. >Press Enter<");
+                                Console.ReadLine();
+                            }
                         }
 
                         if (selection == 6)
                         {
-                            departmentSelected = 0;
+                            isDepartmentLevel = true;
                             break;
                         }
                     }
@@ -184,6 +240,92 @@ namespace EmployeeReviewsFront
             }//Main program loop
 
             //save company profile on exit
+        }
+
+        private static decimal GetRaiseAmount()
+        {
+            while (true)
+            {
+                Console.WriteLine("==== Employee Level Actions ====================================================");
+                Console.WriteLine("\nPlease type a raise amount to offer this department's satisfactory employees.");
+                string userInput = Console.ReadLine();
+                decimal salary = 0m;
+
+                if (decimal.TryParse(userInput, out salary))
+                {
+                    return salary;
+                }
+
+                Console.WriteLine("That is not a valid raise amount. >Press Enter<");
+                Console.ReadLine();
+            }
+        }
+
+        private static int RemoveEmployee()
+        {
+            Console.WriteLine("==== Employee Level Actions ====================================================");
+
+            while (true)
+            {
+
+                Console.WriteLine("\nPlease type the number of the employee to delete. (0 to go back)");
+                string userInput = Console.ReadLine();
+
+                var selection = 0;
+                if (int.TryParse(userInput, out selection))
+                {
+                    return selection;
+                }
+            }
+        }
+
+        private static string GetEmployeePhoneNumber()
+        {
+            Console.Clear();
+            Console.WriteLine("==== Employee Level Actions ====================================================");
+            Console.WriteLine("\nPlease type a phone number for the new employee.");
+            string userInput = Console.ReadLine();
+
+            return userInput;
+        }
+
+        private static decimal GetEmployeeSalary()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("==== Employee Level Actions ====================================================");
+                Console.WriteLine("\nPlease type a salary for the new employee.");
+                string userInput = Console.ReadLine();
+                decimal salary = 0m;
+                if (decimal.TryParse(userInput, out salary))
+                {
+                    return salary;
+                }
+
+                Console.WriteLine("That is not a valid salary. >Press Enter<");
+                Console.ReadLine();
+            }
+        }
+
+        private static string GetEmployeeEmail()
+        {
+            Console.Clear();
+            Console.WriteLine("==== Employee Level Actions ====================================================");
+            Console.WriteLine("\nPlease type a email for the new employee.");
+            string userInput = Console.ReadLine();
+
+            return userInput;
+        }
+
+        private static string GetEmployeeName()
+        {
+            Console.Clear();
+            Console.WriteLine("==== Employee Level Actions ====================================================");
+            Console.WriteLine("\nPlease type a name for the new employee.");
+            string userInput = Console.ReadLine();
+
+            return userInput;
         }
 
         private static int SelectWhichDepartment()
@@ -269,7 +411,7 @@ namespace EmployeeReviewsFront
             {
                 Console.WriteLine($"{i + 1}){listToDisplay[i].Name}");
                 Console.WriteLine($"   ${listToDisplay[i].Salary}/yr, {listToDisplay[i].Email}, {listToDisplay[i].PhoneNum}");
-                Console.WriteLine($"   Has Review: {listToDisplay[i].HasReview}, Is Satisfactory:{listToDisplay[i].IsSatisfactory}");
+                Console.WriteLine($"   Has Review: {listToDisplay[i].HasReview}, Is Satisfactory: {listToDisplay[i].IsSatisfactory}");
             }
         }
 
@@ -285,7 +427,6 @@ namespace EmployeeReviewsFront
 
         private static int EmployeeLevelChoice()
         {
-
             Console.WriteLine("==== Employee Level Actions ====================================================");
 
             while (true)
