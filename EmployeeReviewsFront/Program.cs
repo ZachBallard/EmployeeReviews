@@ -202,12 +202,72 @@ namespace EmployeeReviewsFront
 
                         if (selection == 3)
                         {
-                            //simulate review for employee
+                            if (loadedDepartments[departmentSelected].EmployeeList.Count > 0)
+                            {
+                                while (true)
+                                {
+                                    DrawEmployees(loadedDepartments[departmentSelected].EmployeeList);
+
+                                    selection = SimulateReviewForWhichEmployee();
+
+                                    if (selection == 0)
+                                    {
+                                        break;
+                                    }
+
+                                    if (loadedDepartments[departmentSelected].EmployeeList.Count >= selection && selection > 0)
+                                    {
+                                        int typeOfReview = TypeOfReview();
+                                        selection -= 1;
+
+                                        if (typeOfReview == 1)
+                                        {
+
+                                            loadedDepartments[departmentSelected].EmployeeList[selection].Review =
+                                                "good";
+                                            loadedDepartments[departmentSelected].EmployeeList[selection].HasReview =
+                                                true;
+                                            break;
+                                        }
+
+                                        if (typeOfReview == 2)
+                                        {
+                                            loadedDepartments[departmentSelected].EmployeeList[selection].Review =
+                                                "bad";
+                                            loadedDepartments[departmentSelected].EmployeeList[selection].HasReview =
+                                                true;
+                                            break;
+                                        }
+                                    }
+
+                                    Console.WriteLine("\nCannot simulate review with nonexisting employee. >Press Enter<");
+                                    Console.ReadLine();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nThere are no employees to simulate a review for! >Press Enter<");
+                                Console.ReadLine();
+                            }
                         }
 
                         if (selection == 4)
                         {
-                            //evaluate employees
+                            if (loadedDepartments[departmentSelected].EmployeeList.Count > 0)
+                            {
+                                while (true)
+                                {
+                                    DrawEmployees(loadedDepartments[departmentSelected].EmployeeList);
+
+                                    loadedDepartments[departmentSelected].EvalutateEmployees();
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("There are no employees to evaluate! >Press Enter<");
+                                Console.ReadLine();
+                            }
                         }
 
                         if (selection == 5)
@@ -224,7 +284,7 @@ namespace EmployeeReviewsFront
                             }
                             else
                             {
-                                Console.WriteLine("There are no employees to give a raise to. >Press Enter<");
+                                Console.WriteLine("There are no employees to give a raise to! >Press Enter<");
                                 Console.ReadLine();
                             }
                         }
@@ -240,6 +300,48 @@ namespace EmployeeReviewsFront
             }//Main program loop
 
             //save company profile on exit
+        }
+
+        private static int TypeOfReview()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("==== Employee Level Actions ====================================================");
+
+                Console.WriteLine("\nWill this be a (g)ood review or a (b)ad review?");
+                string userInput = Console.ReadLine();
+
+                switch (userInput)
+                {
+                    case "g":
+                        return 1;
+                    case "b":
+                        return 2;
+                    default:
+                        Console.WriteLine("That was an invalid selection. >Press Enter<");
+                        Console.ReadLine();
+                        break;
+                }
+            }
+        }
+
+        private static int SimulateReviewForWhichEmployee()
+        {
+            Console.WriteLine("==== Employee Level Actions ====================================================");
+
+            while (true)
+            {
+
+                Console.WriteLine("\nPlease type the number of the employee to simulate review. (0 to go back)");
+                string userInput = Console.ReadLine();
+
+                var selection = 0;
+                if (int.TryParse(userInput, out selection))
+                {
+                    return selection;
+                }
+            }
         }
 
         private static decimal GetRaiseAmount()

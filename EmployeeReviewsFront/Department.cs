@@ -24,7 +24,11 @@ namespace EmployeeReviewsFront
         {
             foreach (var e in EmployeeList)
             {
-                e.IsSatisfactory = e.Evaluate();
+                if (e.HasReview)
+                {
+                    e.IsSatisfactory = e.Evaluate();
+                    e.HasReview = false;
+                }
             }
         }
 
@@ -32,11 +36,14 @@ namespace EmployeeReviewsFront
         {
             var empsEligible = EmployeeList.Count(e => e.IsSatisfactory);
 
-            var empRaise = r/empsEligible;
-
-            foreach (var e in EmployeeList.Where(e => e.IsSatisfactory))
+            if (empsEligible > 0)
             {
-                e.Salary += decimal.Round(empRaise, 2, MidpointRounding.AwayFromZero);
+                var empRaise = r / empsEligible;
+
+                foreach (var e in EmployeeList.Where(e => e.IsSatisfactory))
+                {
+                    e.Salary += decimal.Round(empRaise, 2, MidpointRounding.AwayFromZero);
+                }
             }
         }
 
