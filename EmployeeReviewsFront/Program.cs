@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -300,6 +302,23 @@ namespace EmployeeReviewsFront
             }//Main program loop
 
             //save company profile on exit
+            File.WriteAllText(@"App_Data\SaveData.txt", string.Empty);
+
+            string[] lines = new string[loadedDepartments.Count];
+
+            for(int i = 0; i < loadedDepartments.Count; i++)
+            {
+                lines[i] = $"#{loadedDepartments[i].Name}";
+                for (int j = 0; j < loadedDepartments[i].EmployeeList.Count; j++)
+                {
+                    lines[i] = $",{loadedDepartments[i].EmployeeList[j].Name},";
+                    lines[i] = $",{loadedDepartments[i].EmployeeList[j].Salary},";
+                    lines[i] = $",{loadedDepartments[i].EmployeeList[j].Email},";
+                    lines[i] = $",{loadedDepartments[i].EmployeeList[j].PhoneNum},";
+                } 
+            }
+
+            File.WriteAllLines(@"App_Data\SaveData.txt", lines);
         }
 
         private static int TypeOfReview()
