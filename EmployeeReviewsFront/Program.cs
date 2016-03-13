@@ -16,8 +16,8 @@ namespace EmployeeReviewsFront
         {
             //load company profile
 
-            var saveData = System.IO.File.ReadAllLines(@"App_Data\SaveData.txt")
-                                    .Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            var saveData = System.IO.File.ReadAllLines(@"C:\Users\zbgin\OneDrive\Documents\Visual Studio 2015\Projects\EmployeeReviews\EmployeeReviewsFront\App_Data\SaveData.txt")
+                .Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
 
             var loadedDepartments = new List<Department>();
 
@@ -59,7 +59,7 @@ namespace EmployeeReviewsFront
             int departmentSelected = 0;
             bool isDepartmentLevel = true;
 
-            while (!exit)//Main program loop
+            while (!exit) //Main program loop
             {
                 int selection = 0;
 
@@ -166,7 +166,8 @@ namespace EmployeeReviewsFront
                             email = GetEmployeeEmail();
                             phonenNumber = GetEmployeePhoneNumber();
 
-                            loadedDepartments[departmentSelected].EmployeeList.Add(new Employee(name, salary, email, phonenNumber));
+                            loadedDepartments[departmentSelected].EmployeeList.Add(new Employee(name, salary, email,
+                                phonenNumber));
                         }
 
                         if (selection == 2)
@@ -185,7 +186,8 @@ namespace EmployeeReviewsFront
                                     }
 
                                     //cannot remove if only one Employee???
-                                    if (loadedDepartments[departmentSelected].EmployeeList.Count >= selection-- && selection > 0)
+                                    if (loadedDepartments[departmentSelected].EmployeeList.Count >= selection-- &&
+                                        selection > 0)
                                     {
                                         loadedDepartments[departmentSelected].EmployeeList.RemoveAt(selection);
                                         break;
@@ -217,7 +219,8 @@ namespace EmployeeReviewsFront
                                         break;
                                     }
 
-                                    if (loadedDepartments[departmentSelected].EmployeeList.Count >= selection && selection > 0)
+                                    if (loadedDepartments[departmentSelected].EmployeeList.Count >= selection &&
+                                        selection > 0)
                                     {
                                         int typeOfReview = TypeOfReview();
                                         selection -= 1;
@@ -242,7 +245,8 @@ namespace EmployeeReviewsFront
                                         }
                                     }
 
-                                    Console.WriteLine("\nCannot simulate review with nonexisting employee. >Press Enter<");
+                                    Console.WriteLine(
+                                        "\nCannot simulate review with nonexisting employee. >Press Enter<");
                                     Console.ReadLine();
                                 }
                             }
@@ -299,26 +303,27 @@ namespace EmployeeReviewsFront
                     }
                 }
 
-            }//Main program loop
+            } //Main program loop
 
             //save company profile on exit
             File.WriteAllText(@"App_Data\SaveData.txt", string.Empty);
 
-            string[] lines = new string[loadedDepartments.Count];
-
-            for(int i = 0; i < loadedDepartments.Count; i++)
+            using (var sw = new StreamWriter(@"C:\Users\zbgin\OneDrive\Documents\Visual Studio 2015\Projects\EmployeeReviews\EmployeeReviewsFront\App_Data\SaveData.txt"))
             {
-                lines[i] = $"#{loadedDepartments[i].Name}";
-                for (int j = 0; j < loadedDepartments[i].EmployeeList.Count; j++)
+                foreach (var t in loadedDepartments)
                 {
-                    lines[i] = $",{loadedDepartments[i].EmployeeList[j].Name},";
-                    lines[i] = $",{loadedDepartments[i].EmployeeList[j].Salary},";
-                    lines[i] = $",{loadedDepartments[i].EmployeeList[j].Email},";
-                    lines[i] = $",{loadedDepartments[i].EmployeeList[j].PhoneNum},";
-                } 
-            }
+                    sw.WriteLine($"#{t.Name}");
 
-            File.WriteAllLines(@"App_Data\SaveData.txt", lines);
+                    foreach (var e in t.EmployeeList)
+                    {
+                        sw.Write($", {e.Name}");
+                        sw.Write($", {e.Salary}");
+                        sw.Write($", {e.Email}");
+                        sw.Write($", {e.PhoneNum}");
+                        sw.WriteLine();
+                    }
+                }
+            }
         }
 
         private static int TypeOfReview()
