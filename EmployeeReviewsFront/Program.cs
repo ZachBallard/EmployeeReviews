@@ -16,7 +16,7 @@ namespace EmployeeReviewsFront
         {
             //load company profile
 
-            var saveData = System.IO.File.ReadAllLines(@"C:\Users\zbgin\OneDrive\Documents\Visual Studio 2015\Projects\EmployeeReviews\EmployeeReviewsFront\App_Data\SaveData.txt")
+            var saveData = System.IO.File.ReadAllLines(@"App_Data\SaveData.txt")
                 .Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
 
             var loadedDepartments = new List<Department>();
@@ -308,7 +308,7 @@ namespace EmployeeReviewsFront
             //save company profile on exit
             File.WriteAllText(@"App_Data\SaveData.txt", string.Empty);
 
-            using (var sw = new StreamWriter(@"C:\Users\zbgin\OneDrive\Documents\Visual Studio 2015\Projects\EmployeeReviews\EmployeeReviewsFront\App_Data\SaveData.txt"))
+            using (var sw = new StreamWriter(@"App_Data\SaveData.txt"))
             {
                 foreach (var t in loadedDepartments)
                 {
@@ -316,7 +316,7 @@ namespace EmployeeReviewsFront
 
                     foreach (var e in t.EmployeeList)
                     {
-                        sw.Write($", {e.Name}");
+                        sw.Write($" {e.Name}");
                         sw.Write($", {e.Salary}");
                         sw.Write($", {e.Email}");
                         sw.Write($", {e.PhoneNum}");
