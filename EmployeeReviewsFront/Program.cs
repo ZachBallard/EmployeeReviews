@@ -306,9 +306,9 @@ namespace EmployeeReviewsFront
             } //Main program loop
 
             //save company profile on exit
-            File.WriteAllText(@"App_Data\SaveData.txt", string.Empty);
-
-            using (var sw = new StreamWriter(@"App_Data\SaveData.txt"))
+            //File.Open(@"App_Data\SaveData.txt", FileMode.Truncate);
+            
+            using (var sw = new StreamWriter(@"App_Data\SaveData.txt",false))
             {
                 foreach (var t in loadedDepartments)
                 {
